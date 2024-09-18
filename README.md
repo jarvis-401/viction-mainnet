@@ -42,9 +42,12 @@ This repository contains a demo to set up a self-managed Kubernetes cluster with
 │       ├── templates  // k8s Manifests to setup Prometheus
 │       │   ├── ...
 │       └── values.yaml // base Values File
+├── scripts // generic scripts used for deployment
+│   ├── cluster.yml // RKE cluster config
+│   ├── start.sh // entrypoint.sh script for Viction Mainnet 
+│   └── tomo.service // systemctl service file for tomo
 ├── README.md
 ├── setup.sh // script to setup entire application stack / architecture
-└── start.sh // entrypoint.sh script for Viction Mainnet 
 ```
 ---
 
@@ -52,8 +55,14 @@ This repository contains a demo to set up a self-managed Kubernetes cluster with
 
 ### Prerequisites
 1. Linux Machine - (Prefer Ubuntu 18.04+)
-2. Change Private IP in the variabel PRIVATE_IP in `setup.sh` in line number 5
-3. Create a SSH Key and add name of the ssh key in the variable SSH_KEY in `setup.sh` in line number 6
+2. Change Private IP in the variabel PRIVATE_IP in `setup.sh` (refer" line number 5)
+3. Create a SSH Key and add name of the ssh key in the variable SSH_KEY in `setup.sh` (refer" line number 6)
+
+```bash
+# TODO: change these variables
+PRIVATE_IP=""
+SSH_KEY=""
+```
 
 
 ### Option 01 - Using automated shell script - setup.sh
@@ -134,7 +143,6 @@ $ sudo systemctl start tomo.service
 
 1. **Check Logs**:
 
-TODO: 
 ```bash
 $ sudo journalctl -fu tomo.service
 ```
@@ -144,7 +152,7 @@ $ sudo journalctl -fu tomo.service
 2. **cURL**:
 
 ```bash
-$curl --location '86.109.11.23:8545' \
+$curl --location '86.109.11.23:8545' \  # update your IP here
 --header 'Content-Type: application/json' \
 --data '{
     "jsonrpc": "2.0",
@@ -162,7 +170,6 @@ $curl --location '86.109.11.23:8545' \
 ![Screenshot from 2024-09-17 19-36-43](https://github.com/user-attachments/assets/77c7e5f3-baa1-4209-b2e0-60e7d3652aa2)
 
 The provided monitoring dashboard supports:
-- The Current Dashboards Displays
 1. CPU Utilization
 2. Memory Utilization 
 3. Disk Space Utilization
@@ -173,7 +180,7 @@ The provided monitoring dashboard supports:
 
 ## Future Improvements
 1. Support for Infrastructure as Code (IaC)
-2. Add support to scrape and show blockchain node metrics - currently viction doesn't supprts it ([reference](https://github.com/BuildOnViction/victionchain/issues/432))
+2. Add support to scrape and show blockchain node metrics - currently viction doesn't supports it ([issue reference](https://github.com/BuildOnViction/victionchain/issues/432))
 3. Add support for automated alerts based on metrics related to block time, mempool, transaction throughput, network lag, peer connectivity, etc.
 4. Support for centralized logging using [Loki](https://grafana.com/oss/loki/)
 5. Support for HA RPC node setup using HAProxy - to ensure traffic is only served from healthy nodes
