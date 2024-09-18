@@ -24,7 +24,8 @@ export WS_SECRET="getty-site-pablo-auger-room-sos-blair-shin-whiz-delhi"
 export NETSTATS_HOST="stats.viction.xyz"
 export NETSTATS_PORT="443"
 export GENESIS_PATH="/data/mainnet.json"
-export KEYSTORE="/data/tomo/keystore"
+export KEYSTORE_DIR="/data/tomo/keystore"
+export DATA_DIR="/data/tomo"
 export KUBECONFIG=/home/ubuntu/kube_config_cluster.yml'
 
     sudo echo "$source_bash" > /home/ubuntu/.bashrc

@@ -174,7 +174,7 @@ exec tomo $params \
   --verbosity 3 \
   --metrics \
   --datadir $DATA_DIR \
-  --keystore $KEYSTORE_DIR \
+  --keystore $KEYSTORE \
   --identity $IDENTITY \
   --maxpeers $MAXPEERS \
   --password /data/password \
