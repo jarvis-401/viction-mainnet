@@ -146,7 +146,8 @@ $curl --location '86.109.11.23:8545' \
     "method": "eth_syncing",
     "params": [],
     "id": 1
-}'```
+}'
+```
 ---
 <br />
 
