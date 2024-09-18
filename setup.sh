@@ -2,7 +2,8 @@
 
 set -e
 
-PRIVATE_IP=10.128.6.3
+PRIVATE_IP="10.128.6.3"
+ssh_key=""
 
 install_docker(){
     sudo apt install docker.io
@@ -296,7 +297,7 @@ hostname_override: ""
 user: ubuntu
 docker_socket: /var/run/docker.sock
 ssh_key: ""
-ssh_key_path: /home/ubuntu/.ssh/nirvana
+ssh_key_path: /home/ubuntu/.ssh/$ssh_key
 ssh_cert: ""
 ssh_cert_path: ""
 labels: {}

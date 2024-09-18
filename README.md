@@ -48,68 +48,67 @@ This repository contains a demo to set up a self-managed Kubernetes cluster with
 ```
 ---
 
-# Setup
+## Setup
 
 ### Prerequisites
-**1. Linux Machine - ( Prefer Ubuntu )** <br />
-**2. Change Private IP in setup.sh** <br />
-**3. Create a SSH Key ( which will be used while setting up RKE cluster )** <br />
+1. Linux Machine - (Prefer Ubuntu 18.04+)
+2. Change Private IP in the variabel PRIVATE_IP in `setup.sh` in line number 5
+3. Create a SSH Key and add name of the ssh key in the variable SSH_KEY in `setup.sh` in line number 6
 
 
-### - Using automated shell script: ( setup.sh )
+### Option 01 - Using automated shell script - setup.sh
 
-**Clone the repository in your local machine and run it**
+#### Clone the repository in your local machine and run it
 
 ```bash
-$git clone https://github.com/jarvis-401/viction-mainnet.git
-$cd viction-mainnet 
-$bash setup.sh
+$ git clone https://github.com/jarvis-401/viction-mainnet.git
+$ cd viction-mainnet 
+$ bash setup.sh
 ```
----
 
-### - Deploy a viction-mainnet full node manually: 
+### Option 02: Deploy a viction-mainnet full node manually
 
-### 1.Install TomoChain
+#### Install TomoChain
 
 Download and install the TomoChain binary and setup environment variables:
 ```bash
-$wget https://github.com/BuildOnViction/victionchain/releases/download/v2.4.0/tomo-linux-amd64
-$chmod a+x tomo-linux-amd64
-$sudo mv tomo-linux-amd64 /usr/local/bin/tomo
+$ wget https://github.com/BuildOnViction/victionchain/releases/download/v2.4.0/tomo-linux-amd64
+$ chmod a+x tomo-linux-amd64
+$ sudo mv tomo-linux-amd64 /usr/local/bin/tomo
 
 # Download the Genesis file
-$curl -L https://raw.githubusercontent.com/buildonViction/tomochain/master/genesis/mainnet.json -o /data/mainnet.json
+$ curl -L https://raw.githubusercontent.com/buildonViction/tomochain/master/genesis/mainnet.json -o /data/mainnet.json
 
 # Set up directory structure
-$mkdir /home/ubuntu/scripts
-$echo "1234" > /data/password
+$ mkdir /home/ubuntu/scripts
+$ echo "1234" > /data/password
 ```
 
-### 2. Add the following environment variables to your ~/.bashrc:
+#### Add the following environment variables to your ~/.bashrc:
 
 ```bash
-$export IDENTITY="viction-mainnet"
-$export SYNC_MODE="full" 
-$export NETWORK_ID="88"
-$export WS_SECRET="getty-site-pablo-auger-room-sos-blair-shin-whiz-delhi"
-$export NETSTATS_HOST="stats.viction.xyz"
-$export NETSTATS_PORT="443"
-$export GENESIS_PATH="/data/mainnet.json"
-$export KUBECONFIG=/home/ubuntu/kube_config_cluster.yml
+$ export IDENTITY="viction-mainnet"
+$ export SYNC_MODE="full" 
+$ export NETWORK_ID="88"
+$ export WS_SECRET="getty-site-pablo-auger-room-sos-blair-shin-whiz-delhi"
+$ export NETSTATS_HOST="stats.viction.xyz"
+$ export NETSTATS_PORT="443"
+$ export GENESIS_PATH="/data/mainnet.json"
+$ export KUBECONFIG=/home/ubuntu/kube_config_cluster.yml
 ```
 
-### 3. Init genesis and create a new account or use an existing one by running:
+#### Init genesis and create a new account or use an existing one by running:
 
 ```bash
-$tomo init tomo init $GENESIS_PATH --datadir /data/tomo
+$ tomo init tomo init $GENESIS_PATH --datadir /data/tomo
 
-$ACCOUNT_ADDRESS=$(tomo account new --password /data/password --keystore $KEYSTORE | grep 'Address:' | awk '{print $2}' | tr -d '{}')
+$ ACCOUNT_ADDRESS=$(tomo account new --password /data/password --keystore $KEYSTORE | grep 'Address:' | awk '{print $2}' | tr -d '{}')
 ```
 
-### 4. Set up TomoChain as a service:
+#### Set up TomoChain as a service:
 
 ```bash
-$echo "[Unit]
+$ echo "[Unit]
 Description=Tomo Node
 
 [Service]
@@ -122,21 +121,27 @@ RestartSec=10
 WantedBy=multi-user.target" | sudo tee /etc/systemd/system/tomo.service
 ```
 
-### 6. Enable and start the service:
+#### Enable and start the service:
 
 ```bash
-$sudo systemctl daemon-reload
-$sudo systemctl enable tomo.service
-$sudo systemctl start tomo.service
-$sudo journalctl -fu tomo.service
+$ sudo systemctl daemon-reload
+$ sudo systemctl enable tomo.service
+$ sudo systemctl start tomo.service
 ```
 ---
 
-### Logs
+### Test
+
+1. **Check Logs**:
+
+TODO: 
+```bash
+$ sudo journalctl -fu tomo.service
+```
 
 ![Screenshot from 2024-09-17 18-14-44](https://github.com/user-attachments/assets/e383a42a-1e51-4ea0-aef9-932505fe3908)
 
-**cURL**:
+2. **cURL**:
 
 ```bash
 $curl --location '86.109.11.23:8545' \
@@ -147,16 +152,22 @@ $curl --location '86.109.11.23:8545' \
     "params": [],
     "id": 1
 }'
+
 ```
+
 ---
-<br />
 
 ### Monitoring
 
 ![Screenshot from 2024-09-17 19-36-43](https://github.com/user-attachments/assets/77c7e5f3-baa1-4209-b2e0-60e7d3652aa2)
 
 The provided monitoring dashboard supports:
-- TBD
+- The Current Dashboards Displays
+1. CPU Utilization
+2. Memory Utilization 
+3. Disk Space Utilization
+4. System Load 
+5. Swap Used 
 
 ---
 
@@ -175,16 +186,3 @@ The provided monitoring dashboard supports:
 - [Grafana Helm Chart](https://github.com/grafana/helm-charts/tree/main/charts/grafana)
 - [Prometheus Helm Chart](https://github.com/prometheus-community/helm-charts/tree/main/charts/prometheus)
 - [Viction Node Setup](https://docs.viction.xyz/)
-
----
-### Note: There is an open issue regarding metrics
-
-They have not added metrics in there code
-Although i have added the flag for metrics in the chain config
-
-**issue**
-Link - https://github.com/BuildOnViction/victionchain/issues/432
-
----
-
-This `README.md` explains the setup process for the architecture and includes all necessary commands and explanations for running the services.
